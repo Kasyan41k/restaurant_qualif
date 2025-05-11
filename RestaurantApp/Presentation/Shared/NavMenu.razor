@@ -1,0 +1,22 @@
+﻿<MudNavMenu >
+    <AuthorizeView Roles="Chief">
+        <Authorized>
+            <MudNavLink Href="/chief/dishes" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Fastfood">Страви</MudNavLink>
+            <MudNavLink Href="/chief/dish-categories" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Bloodtype">Категорії страв</MudNavLink>
+            <MudNavLink Href="/chief/drinks" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Fastfood">Напої</MudNavLink>
+            <MudNavLink Href="/chief/drink-categories" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Bloodtype">Категорії напоїв</MudNavLink>
+            <MudNavLink Href="/chief/menu" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.MenuBook">Сети меню</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+</MudNavMenu>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

@@ -1,0 +1,27 @@
+@using RestaurantApp.Presentation.Pages.Assortment.Menus
+@using RestaurantApp.Presentation.Pages.Orders
+
+@inject OrderPageService OrderPageService
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            Список страв сету
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <MudStack>
+            @foreach(var item in Items)
+            {
+                <MenuItemComponent Item="@item"/>
+            }
+        </MudStack>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter] public List<FoodItem> Items { get; set; }
+}

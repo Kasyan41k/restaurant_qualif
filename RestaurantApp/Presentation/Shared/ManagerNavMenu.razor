@@ -1,0 +1,25 @@
+<MudNavMenu>
+    <AuthorizeView Roles="Manager">
+        <Authorized>
+            <MudNavLink Href="/manager/orders" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.BorderColor">
+                Orders
+            </MudNavLink>
+            <MudNavLink Href="/manager/event-types" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Event">Типи подій</MudNavLink>
+            <MudNavLink Href="/budget-history" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Event">Оплачені замовлення</MudNavLink>
+            @* <MudNavLink Href="/manager/setup" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.SettingsSuggest">
+                Setup
+            </MudNavLink> *@
+        </Authorized>
+    </AuthorizeView>
+</MudNavMenu>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

@@ -1,0 +1,88 @@
+@page "/chief/menu"
+@attribute [Authorize(Roles = "Chief")]
+
+@inject IMenuService MenuService
+
+<style>
+    .menus-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .menu-container {
+        width: calc(33.333% - 10px);
+        display: flex;
+        align-items: center;
+        @* justify-content: center; *@
+
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+    }
+
+    .menu-picture {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .menu-picture img {
+        width: 100%;
+        height: auto;
+        max-height: 150px;
+        object-fit: contain;
+    }
+
+    .menu-content {
+        width: 100%;
+        text-align: left;
+    }
+
+    .menu-title {
+        font-size: inherit;
+        font-weight: inherit;
+    }
+</style>
+
+<MudLink Href="/chief/menu/create">
+    <h3>Додати меню</h3>
+</MudLink>
+
+<div class="menus-container">
+    @foreach(var menu in MenuList)
+    {
+        <MudPaper class="menu-container">
+            <div class="menu-picture">
+                @if(!string.IsNullOrEmpty(menu.ImageUrl))
+                {
+                    <img src="@menu.ImageUrl" Alt="Food Image" Class="rounded-lg"/>
+                }
+            </div>
+
+            <div class="menu-content">
+                <h1>
+                    <MudLink class="menu-title" Href="/chief/menu/1">@menu.Name</MudLink>
+                </h1>
+
+                <MudPaper  Style="background-color: green; padding: 0 5px; display: inline-block; width: auto; margin: 5px 0;">
+                    <MudText Typo="Typo.subtitle2" Style="color: white;">@menu.EventType.Name</MudText>
+                </MudPaper>
+
+                <MudStack Row="true">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                        Редагувати
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">
+                        Видалити
+                    </MudButton>
+                </MudStack>
+            </div>
+        </MudPaper>
+    }
+</div>
+

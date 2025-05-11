@@ -1,0 +1,65 @@
+@page "/manager/orders"
+@attribute [Authorize(Roles = "Manager")]
+
+@inject IOrderService OrderService
+
+@inject ISnackbar Snackbar
+@inject RestaurantDialogFactory DialogFactory
+
+<MudAutocomplete T="KeyValuePair<OrderStatusEnum, string>"
+    Label="Статус замовлення"
+    SearchFunc="@SearchOrderStatus"
+    Variant="Variant.Outlined"
+    Value="@SelectedOrderStatus"
+    ValueChanged="@OnSelectedStatus"
+    ToStringFunc="@(e => e.Value)"
+    Style="display: inline-block; width: auto; min-width: 150px;" />
+
+<MudGrid Class="mt-1">
+@foreach(var order in Orders)
+{
+    <MudItem Style="width: 100%; display: block;">
+        <MudPaper Class="pa-4" Style="width: 100%; display: block;">
+            <div style="display: inline-block; max-width: 100%; width: auto;">
+                <MudStack>
+                    <MudLink Variant="Variant.Filled" Color="Color.Primary" style="font-size: 24px;"
+                        href="@($"/manager/orders/{order.Id}")">
+                        №@order.Id
+                    </MudLink>
+                    <MudDivider style="border: 2px solid;" />
+                    <MudText Typo="Typo.h5" Align="Align.Left">
+                        @if(order.OrderDays.Count > 1)
+                        {
+                                <text>@(order.OrderDays.Min(x => x.Date.ToLocalTime()).Date.ToString($"dd.MM.yyyy")) - @(order.OrderDays.Max(x
+                            => x.Date).ToLocalTime().Date.ToString($"dd.MM.yyyy"))</text>
+                        }
+                        else
+                        {
+                                <text>@(order.OrderDays.FirstOrDefault().Date.ToLocalTime().Date.ToString($"dd.MM.yyyy"))</text>
+                        }
+                    </MudText>
+                    <MudText Typo="Typo.h5">
+                        Marriage
+                    </MudText>
+                </MudStack>
+                <MudPaper
+                    Style="background-color: red; padding: 0 5px; display: inline-block; width: auto; margin-top: 15px; "
+                    FlexGrow="0">
+                    <MudText Typo="Typo.subtitle2" Style="color: white;">@OrderStatuses[order.Status]</MudText>
+                </MudPaper>
+                @if(order.Status == OrderStatusEnum.Created)
+                {
+                    <MudStack Row="true" Style="display: block; margin-top: 15px;">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => OnConfirmOrderClicked(order))">
+                            Підтвердити
+                        </MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="@(() => OnDeclineOrderClicked(order))">
+                            Відхилити
+                        </MudButton>
+                    </MudStack>
+                }
+            </div>
+        </MudPaper>
+    </MudItem>
+}
+</MudGrid>

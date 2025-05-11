@@ -1,0 +1,10 @@
+{
+    "dotnet.server.useOmnisharp": true,
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/.idea" : true,
+        "**/.vscode": true,
+    },
+    "csharp.format.enable": true,
+}

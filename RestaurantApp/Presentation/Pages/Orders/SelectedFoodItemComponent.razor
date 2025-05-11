@@ -1,0 +1,135 @@
+@* <MudPaper class="dish-container">
+    <div class="dish-picture">
+
+    </div>
+
+    <div class="dish-title">
+        <h1>
+            @SelectedDish.Dish.Name
+        </h1>
+    </div>
+    <div class="dish-buttons">
+        <MudStack Row="true">
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary">
+                Remove
+            </MudButton>
+        </MudStack>
+        <MudStack Row="true">
+            <MudButton>-</MudButton>
+            <MudTextField @bind-Value="SelectedDish.Count"></MudTextField>
+            <MudButton>+</MudButton>
+        </MudStack>
+    </div>
+</MudPaper> *@
+
+<MudPaper class="food-item-container">
+    <MudStack Row="true">
+        <div class="food-item-picture">
+            @if(!string.IsNullOrEmpty(SelectedFoodItem.Item.ImageUrl))
+            {
+                <img src="@SelectedFoodItem.Item.ImageUrl" Alt="Food Image" Class="rounded-lg"/>
+            }
+        </div>
+
+        <MudStack Align="AlignItems.Start" Spacing="0">
+            @if(SelectedFoodItem.Item is Dish dish)
+            {
+                <h1>
+                    @dish.Name
+                </h1>
+
+                <h3>
+                    Категорія: @dish.Category.Name
+                </h3>
+                <h3>
+                    Порційна: @(dish.Category.IsShared ? "так" : "ні")
+                </h3>
+                <h3>
+                    Вага: @(dish.Weight) г.
+                </h3>
+                if (dish.Category.IsShared)
+                {
+                    <h3>
+                        Потрібно на 1 людину: @(dish.RecommendedWeightPerPortion) г.
+                    </h3>
+                }
+            }
+            else if(SelectedFoodItem.Item is Drink drink)
+            {
+                <h1>
+                    @drink.Name
+                </h1>
+
+                <h3>
+                    Категорія: @drink.Category.Name
+                </h3>
+                <h3>
+                    Розливається: @(drink.Category.IsShared ? "так" : "ні")
+                </h3>
+                <h3>
+                    Об'єм: @(drink.Volume) мл.
+                </h3>
+                if (drink.Category.IsShared)
+                {
+                    <h3>
+                        Потрібно на 1 людину: @(drink.VolumePerPerson)мл.
+                    </h3>
+                }
+            }
+
+            <MudStack Row="true" >
+                <MudButton @onclick="@(() => { SelectedFoodItem.Count = SelectedFoodItem.Count > 1 ? --SelectedFoodItem.Count : 1 ;})" Variant="Variant.Filled">-</MudButton>
+                <MudTextField Class="centered-input" @bind-Value="SelectedFoodItem.Count"></MudTextField>
+                <MudButton @onclick="@(() => { SelectedFoodItem.Count++; })" Variant="Variant.Filled">+</MudButton>
+            </MudStack>
+
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary">
+                Remove
+            </MudButton>
+        </MudStack>
+    </MudStack>
+</MudPaper>
+
+<style>
+    .food-item-container {
+        gap: 10px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+    }
+
+    .food-item-picture {
+        width: 300px;
+        max-width: 300px;
+        margin: 10px;
+        background-color: transparent;
+        height: 150px;
+    }
+
+    .food-item-picture img {
+        width: 100%;
+        height: auto;
+        max-height: 150px;
+        /* Ви можете налаштувати максимальну висоту картинки */
+        object-fit: contain;
+        /* Підтримка пропорцій зображення */
+    }
+
+    .food-item-title {
+        width: 100%;
+        align-items: start;
+    }
+    .food-item-buttons {
+        width: 100%;
+        align-items: start;
+    }
+    .centered-input input{
+        text-align: center;
+    }
+</style>
+
+@code {
+    [Parameter] public SelectedFoodItem? SelectedFoodItem { get; set; }
+
+
+}
